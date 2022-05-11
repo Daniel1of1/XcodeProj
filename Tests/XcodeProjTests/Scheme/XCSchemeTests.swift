@@ -189,6 +189,20 @@ final class XCSchemeIntegrationTests: XCTestCase {
         XCTAssertEqual(subject, reconstructedSubject)
     }
 
+    func test_launchAction_queueDebuggingEnabled_serializingAndDeserializing() throws {
+        // Given
+        let lldbInitPath = "/Users/user/custom/.lldbinit"
+        let subject = XCScheme.LaunchAction(runnable: nil, buildConfiguration: "Debug", customLLDBInitFile: lldbInitPath, queueDebuggingEnabled: false)
+
+        // When
+        let element = subject.xmlElement()
+        let reconstructedSubject = try XCScheme.LaunchAction(element: element)
+
+        // Then
+        XCTAssertEqual(subject, reconstructedSubject)
+    }
+
+
     func test_testAction_customLLDBInitFile_serializingAndDeserializing() throws {
         // Given
         let lldbInitPath = "/Users/user/custom/.lldbinit"
