@@ -68,6 +68,7 @@ extension XCScheme {
         // To enable the option in Xcode: defaults write com.apple.dt.Xcode IDEDebuggerFeatureSetting 12
         public var customLaunchCommand: String?
         public var customLLDBInitFile: String?
+        public var queueDebuggingEnabled: Bool
 
         // MARK: - Init
 
@@ -105,7 +106,8 @@ extension XCScheme {
                     launchAutomaticallySubstyle: String? = nil,
                     storeKitConfigurationFileReference: StoreKitConfigurationFileReference? = nil,
                     customLaunchCommand: String? = nil,
-                    customLLDBInitFile: String? = nil) {
+                    customLLDBInitFile: String? = nil,
+                    queueDebuggingEnabled: Bool = true) {
             self.runnable = runnable
             self.macroExpansion = macroExpansion
             self.buildConfiguration = buildConfiguration
@@ -139,6 +141,7 @@ extension XCScheme {
             self.storeKitConfigurationFileReference = storeKitConfigurationFileReference
             self.customLaunchCommand = customLaunchCommand
             self.customLLDBInitFile = customLLDBInitFile
+            self.queueDebuggingEnabled = queueDebuggingEnabled
             super.init(preActions, postActions)
         }
 
@@ -218,6 +221,7 @@ extension XCScheme {
             }
             customLaunchCommand = element.attributes["customLaunchCommand"]
             customLLDBInitFile = element.attributes["customLLDBInitFile"]
+            queueDebuggingEnabled = element.attributes["queueDebuggingEnabled"] == "YES"
 
             try super.init(element: element)
         }
@@ -235,6 +239,7 @@ extension XCScheme {
                 "debugDocumentVersioning": debugDocumentVersioning.xmlString,
                 "debugServiceExtension": debugServiceExtension,
                 "allowLocationSimulation": allowLocationSimulation.xmlString,
+                "queueDebuggingEnabled": queueDebuggingEnabled.xmlString
             ]
 
             if let askForAppToLaunch = askForAppToLaunch {
@@ -374,7 +379,8 @@ extension XCScheme {
                 launchAutomaticallySubstyle == rhs.launchAutomaticallySubstyle &&
                 storeKitConfigurationFileReference == rhs.storeKitConfigurationFileReference &&
                 customLaunchCommand == rhs.customLaunchCommand &&
-                customLLDBInitFile == rhs.customLLDBInitFile
+                customLLDBInitFile == rhs.customLLDBInitFile &&
+                queueDebuggingEnabled == rhs.queueDebuggingEnabled
         }
     }
 }
